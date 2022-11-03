@@ -3,9 +3,12 @@
   "scripts": {
     "build": "npm run build:css && remix build",
     "build:css": "tailwindcss -m -i ./app/lib/tailwind/app.css -o app/lib/tailwind/build.css",
-    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -w -i ./app/lib/tailwind/app.css -o app/lib/tailwind/build.css",
-    "start": "remix-serve build"
+    "dev": "concurrently \"npm run dev:css\" \"npm run dev-express\"",
+    "dev-express": "remix build && run-p \"dev-express:*\"",
+    "dev-express:node": "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.js --watch ./server.js",
+    "dev-express:remix": "remix watch",
+    "start": "cross-env NODE_ENV=production node ./server.js"
   },
   "dependencies": {
     "@ngneat/falso": "^6.1.0",
@@ -24,7 +27,11 @@
     "remix-validated-form": "^4.6.0",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.7.4",
@@ -38,7 +45,10 @@
     "postcss": "^8.4.18",
     "prisma": "^4.5.0",
     "tailwindcss": "^3.2.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "dotenv": "^16.0.2",
+    "nodemon": "^2.0.19",
+    "npm-run-all": "^4.1.5"
   },
   "prisma": {
     "schema": "app/lib/prisma/schema.prisma",
