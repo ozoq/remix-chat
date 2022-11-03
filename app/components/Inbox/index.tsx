@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Message } from "@prisma/client";
+import type { Message, User } from "@prisma/client";
 import InboxTable from "./InboxTable";
 import Tab from "./Tab";
 import NewMessageForm from "../forms/NewMessageForm";
@@ -8,9 +8,10 @@ import MessageView from "./MessageView";
 export interface InboxProps {
   sent: Message[];
   recieved: Message[];
+  users: User[];
 }
 
-export default function Inbox({ sent, recieved }: InboxProps) {
+export default function Inbox({ sent, recieved, users }: InboxProps) {
   const [opened, setOpened] = useState<Message | null>(null);
   const [tab, setTab] = useState<"sent" | "recieved" | "new">("recieved");
 
@@ -43,7 +44,7 @@ export default function Inbox({ sent, recieved }: InboxProps) {
       {opened ? (
         <MessageView message={opened} />
       ) : tab === "new" ? (
-        <NewMessageForm />
+        <NewMessageForm users={users} />
       ) : (
         <InboxTable
           messages={tab === "sent" ? sent : recieved}

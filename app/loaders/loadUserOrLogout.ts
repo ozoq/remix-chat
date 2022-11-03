@@ -10,10 +10,10 @@ export default async function loadUserOrLogout(request: Request) {
     invariant(name, "No such name");
     const user = await getUserWithMessages(name);
     invariant(user, "No such user");
-    return json({ user });
+    return user;
   } catch {
     setName(null);
-    return redirect("/login", {
+    throw redirect("/login", {
       headers: { "Set-Cookie": await commit() },
     });
   }

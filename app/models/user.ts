@@ -13,6 +13,10 @@ export async function getUserWithMessages(name: User["name"]) {
   });
 }
 
+export async function getAllUsers() {
+  return await db.user.findMany();
+}
+
 export async function doesUserExist(name: User["name"]) {
   const user = await db.user.findUnique({
     where: {

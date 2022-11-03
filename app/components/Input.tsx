@@ -4,16 +4,14 @@ import { useEffect } from "react";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  setError: (error: string | undefined) => void;
+  setError?: (error: string | undefined) => void;
 }
 
 export default function Input({ name, setError, ...otherProps }: InputProps) {
   const { error, getInputProps } = useField(name);
 
-  console.log(error);
-
   useEffect(() => {
-    setError(error);
+    setError?.(error);
   }, [setError, error]);
 
   return <input {...otherProps} {...getInputProps()} />;

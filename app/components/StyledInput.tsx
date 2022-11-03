@@ -1,12 +1,17 @@
 import { useState } from "react";
+import type { InputProps } from "./Input";
 import Input from "./Input";
 
-export interface StyledInputProps {
+export interface StyledInputProps extends InputProps {
   name: string;
   label: string;
 }
 
-export default function StyledInput({ name, label }: StyledInputProps) {
+export default function StyledInput({
+  name,
+  label,
+  ...otherProps
+}: StyledInputProps) {
   const [error, setError] = useState<string | undefined>(undefined);
 
   return (
@@ -19,6 +24,7 @@ export default function StyledInput({ name, label }: StyledInputProps) {
         placeholder={label}
         className="input input-bordered w-full"
         setError={setError}
+        {...otherProps}
       />
       {error && (
         <label className="label">

@@ -3,6 +3,8 @@ import { withZod } from "@remix-validated-form/with-zod";
 import { z } from "zod";
 import Submit from "../Submit";
 import StyledInput from "../StyledInput";
+import UsersAutocomplete from "../Inbox/Autocomplete";
+import type { User } from "@prisma/client";
 
 export const newMessageFormValidator = withZod(
   z.object({
@@ -12,11 +14,16 @@ export const newMessageFormValidator = withZod(
   })
 );
 
-export default function NewMessageForm() {
-  const isSubmitting = useIsSubmitting("index-form");
+export interface NewMessageFormProps {
+  users: User[];
+}
+
+export default function NewMessageForm({ users }: NewMessageFormProps) {
+  const isSubmitting = useIsSubmitting("new-message-form");
 
   return (
     <ValidatedForm
+      id="new-message-form"
       className="flex-1"
       method="post"
       action="/?index"
@@ -27,7 +34,11 @@ export default function NewMessageForm() {
           <div className="card-title">
             <h1 className=" text-2xl font-bold">New message</h1>
           </div>
-          <StyledInput name="recipient" label="Recipient" />
+          <UsersAutocomplete
+            label="Recipient"
+            inputName="recipient"
+            users={users}
+          />
           <StyledInput name="topic" label="Topic" />
           <StyledInput name="body" label="Body" />
           <div className="card-actions">
